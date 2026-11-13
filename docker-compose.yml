@@ -1,0 +1,16 @@
+networks:
+  docker_default:
+    external: true
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: bot-mysql-init
+    networks:
+      - docker_default
+    entrypoint: >
+      sh -c "mysql -h mysql-container -uroot -proot -e
+      'CREATE DATABASE IF NOT EXISTS bot CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+       GRANT ALL PRIVILEGES ON bot.* TO \"user\"@\"%\";
+       FLUSH PRIVILEGES;'"
+    restart: "no"
